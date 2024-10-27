@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @vii TODO: YOUR NAME HERE
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -16,7 +16,6 @@ public class Model extends Observable {
     private int maxScore;
     /** True iff game is ended. */
     private boolean gameOver;
-
     /* Coordinate System: column C, row R of the board (where row 0,
      * column 0 is the lower-left corner of the board) will correspond
      * to board.tile(c, r).  Be careful! It works like (x, y) coordinates.
@@ -113,6 +112,43 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        board.setViewingPerspective(side);
+        //有相同方块的时候，合并方块并加分
+        for( int col = 0; col < board.size(); col++){
+            for (int row = board.size() - 1; row >= 0; row--){
+                Tile t = board.tile(col, row);
+                if (t != null){
+                    for (int row1 = row - 1; row1 >= 0; row1--){
+                        Tile t1 = board.tile(col, row1);
+                        if(t1 != null){
+                            if (t1.value() == t.value()){
+                                board.move(col, row, t1);
+                                changed = true;
+                                score += 2 * t.value();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        /**当当前砖块为空的时候，将下面的方块往上移动**/
+        for (int col = 0; col < board.size(); col += 1) {
+            for (int row = board.size() - 1; row >= 0; row -= 1) {
+                Tile t1 = board.tile(col, row);
+                if (t1 == null) {
+                    for (int row2 = row - 1; row2 >= 0; row2 -= 1) {
+                        Tile t2 = board.tile(col, row2);
+                        if (t2 != null) {
+                            board.move(col, row, t2);
+                            changed = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        board.setViewingPerspective(Side.NORTH);
 
         checkGameOver();
         if (changed) {
@@ -138,6 +174,13 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        for(int i = 0; i < b.size(); i++){
+            for(int j = 0; j < b.size(); j++){
+                if(b.tile(i, j) == null){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +191,13 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for(int i = 0; i < b.size(); i++){
+            for(int j = 0; j < b.size(); j++){
+                if(b.tile(i,j) != null && b.tile(i, j).value() == MAX_PIECE){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -159,9 +209,34 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        boolean isEmpty = emptySpaceExists(b);
+        boolean isMax = maxTileExists(b);
+        if(isEmpty || isMax){
+            return true;
+        }
+        for(int i = 0; i < b.size(); i++){
+            for(int j = 0; j < b.size(); j++){
+                if(equalNext(b, i, j)){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
+    public static boolean equalNext(Board b, int col, int row){
+        int rows = b.size();
+        int cols = b.size();
+        // 检查右侧元素
+        if (col + 1 < cols && b.tile(col, row).value() == b.tile(col + 1, row).value()) {
+            return true;
+        }
+        // 检查下方元素
+        if (row + 1 < rows && b.tile(col, row).value() == b.tile(col, row + 1).value()) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
      /** Returns the model as a string, used for debugging. */
