@@ -1,7 +1,6 @@
 package timingtest;
-import afu.org.checkerframework.checker.igj.qual.I;
+
 import edu.princeton.cs.algs4.Stopwatch;
-import org.checkerframework.checker.units.qual.A;
 
 /**
  * Created by hug.
@@ -35,10 +34,10 @@ public class TimeAList {
         int ops = 0;
         int time = 0;
 
-        for (int i = 0; i < 1024000; i++){
+        for (int i = 0; i < 1024000; i++) {
             N.addLast(i);
             ops += 1;
-            if (N.size() == Math.pow(2, time) * 1000){
+            if (N.size() == Math.pow(2, time) * 1000) {
                 time += 1;
                 Ns.addLast(N.size());
                 double timeInSeconds = sw.elapsedTime();
