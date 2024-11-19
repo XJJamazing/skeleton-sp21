@@ -8,18 +8,18 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int nextFirst;
     private int nextLast;
 
-    public ArrayDeque(){
+    public ArrayDeque() {
         size = 0;
         nextFirst = 4;
         nextLast = 5;
-        items =(T[]) new Object[8];
+        items = (T[]) new Object[8];
     }
 
     //重新扩大数组
-    private void reSize(int newSize){
+    private void reSize(int newSize) {
         T[] temp =(T[]) new Object[newSize];
         int ind = 0;
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             ind = arrayInd(i);
             temp[newSize / 4 + i] = items[ind];
         }
@@ -29,44 +29,44 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     //通过偏移量求所在位置
-    public int arrayInd(int ind){
-        if (nextFirst + ind + 1 >= items.length){
+    private int arrayInd(int ind) {
+        if (nextFirst + ind + 1 >= items.length) {
             return nextFirst + ind + 1 - items.length;
-        }else {
+        } else {
             return nextFirst + ind + 1;
         }
     }
 
     @Override
-    public void addFirst(T item){
-        if (size + 2 == items.length){
+    public void addFirst(T item) {
+        if (size + 2 == items.length) {
             reSize((int) items.length * 2);
         }
         items[nextFirst] = item;
-        if (nextFirst == 0){
+        if (nextFirst == 0) {
             nextFirst = items.length - 1;
-        }else {
+        } else {
             nextFirst -= 1;
         }
         size += 1;
     }
 
     @Override
-    public void addLast(T item){
-        if (size == items.length - 2){
+    public void addLast(T item) {
+        if (size == items.length - 2) {
             reSize((int) items.length * 2);
         }
         items[nextLast] = item;
-        if (nextLast == items.length - 1){
+        if (nextLast == items.length - 1) {
             nextLast = 0;
-        }else {
+        } else {
             nextLast += 1;
         }
         size += 1;
     }
 
     @Override
-    public int size(){
+    public int size() {
         return size;
     }
 
@@ -80,20 +80,20 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 //    }
 
     @Override
-    public void printDeque(){
+    public void printDeque() {
         int ind = 0;
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             ind = arrayInd(i);
             System.out.print(items[ind] + " ");
         }
     }
 
     @Override
-    public T removeFirst(){
-        if (isEmpty()){
+    public T removeFirst() {
+        if (isEmpty()) {
             return null;
         }
-        if (size - 1 < items.length / 4 && size > 8){
+        if (size - 1 < items.length / 4 && size > 8) {
             reSize(items.length / 2);
         }
         T item = items[arrayInd(0)];
@@ -104,11 +104,11 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     @Override
-    public T removeLast(){
-        if (isEmpty()){
+    public T removeLast() {
+        if (isEmpty()) {
             return null;
         }
-        if (size - 1 < items.length / 4 && size > 8){
+        if (size < items.length / 4 && size > 8) {
             reSize(items.length / 2);
         }
         int ind = arrayInd(size - 1);
@@ -119,20 +119,20 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     @Override
-    public T get(int index){
+    public T get(int index) {
         int ind = arrayInd(index);
         return items[ind];
     }
 
     @Override
-    public Iterator<T> iterator(){
+    public Iterator<T> iterator() {
         return new ArrayDequeIterator();
     }
 
-    private class ArrayDequeIterator<T> implements Iterator<T>{
+    private class ArrayDequeIterator<T> implements Iterator<T> {
         private int wizPos;
 
-        public ArrayDequeIterator(){
+        ArrayDequeIterator() {
             wizPos = 0;
         }
 
@@ -150,22 +150,22 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     @Override
-    public boolean equals(Object o){
-        if (this == o){
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (o == null){
+        if (o == null) {
             return false;
         }
-        if (!(o instanceof ArrayDeque)){
+        if (!(o instanceof ArrayDeque)) {
             return false;
         }
         ArrayDeque<T> o1 = (ArrayDeque<T>) o;
-        if (o1.size() != this.size()){
+        if (o1.size() != this.size()) {
             return false;
         }
-        for (int i = 0; i < size; i++){
-            if (o1.get(i) !=  this.get(i)){
+        for (int i = 0; i < size; i++) {
+            if (o1.get(i) !=  this.get(i)) {
                 return false;
             }
         }
