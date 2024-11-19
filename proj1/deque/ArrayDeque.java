@@ -21,7 +21,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         int ind = 0;
         for (int i = 0; i < size; i++){
             ind = arrayInd(i);
-            temp[newSize / 4 + 1] = items[ind];
+            temp[newSize / 4 + i] = items[ind];
         }
         items = temp;
         nextFirst = newSize / 4 - 1;
