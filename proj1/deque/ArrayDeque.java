@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<T> implements Iterable<T> {
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private T[] items;
     private int size;
     private int nextFirst;
@@ -29,7 +29,7 @@ public class ArrayDeque<T> implements Iterable<T> {
     }
 
     //通过偏移量求所在位置
-    private int arrayInd(int ind){
+    public int arrayInd(int ind){
         if (nextFirst + ind + 1 >= items.length){
             return nextFirst + ind + 1 - items.length;
         }else {
@@ -37,6 +37,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         }
     }
 
+    @Override
     public void addFirst(T item){
         if (size + 2 == items.length){
             reSize((int) items.length * 2);
@@ -50,6 +51,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         size += 1;
     }
 
+    @Override
     public void addLast(T item){
         if (size == items.length - 2){
             reSize((int) items.length * 2);
@@ -63,18 +65,21 @@ public class ArrayDeque<T> implements Iterable<T> {
         size += 1;
     }
 
+    @Override
     public int size(){
         return size;
     }
 
-    public boolean isEmpty(){
-        if(size == 0){
-            return true;
-        }else {
-            return false;
-        }
-    }
+//    @Override
+//    public boolean isEmpty(){
+//        if(size == 0){
+//            return true;
+//        }else {
+//            return false;
+//        }
+//    }
 
+    @Override
     public void printDeque(){
         int ind = 0;
         for (int i = 0; i < size; i++){
@@ -83,6 +88,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         }
     }
 
+    @Override
     public T removeFirst(){
         if (isEmpty()){
             return null;
@@ -97,6 +103,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         return item;
     }
 
+    @Override
     public T removeLast(){
         if (isEmpty()){
             return null;
@@ -111,6 +118,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         return item;
     }
 
+    @Override
     public T get(int index){
         int ind = arrayInd(index);
         return items[ind];
@@ -141,6 +149,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         }
     }
 
+    @Override
     public boolean equals(Object o){
         if (this == o){
             return true;
