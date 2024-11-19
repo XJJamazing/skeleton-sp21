@@ -30,7 +30,7 @@ public class ArrayDeque<T> implements Iterable<T> {
 
     //通过偏移量求所在位置
     private int arrayInd(int ind){
-        if (nextFirst + ind + 1 > items.length){
+        if (nextFirst + ind + 1 >= items.length){
             return nextFirst + ind + 1 - items.length;
         }else {
             return nextFirst + ind + 1;
@@ -51,7 +51,7 @@ public class ArrayDeque<T> implements Iterable<T> {
     }
 
     public void addLast(T item){
-        if (size + 2 == items.length){
+        if (size == items.length - 2){
             reSize((int) items.length * 2);
         }
         items[nextLast] = item;
